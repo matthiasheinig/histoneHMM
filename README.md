@@ -24,16 +24,25 @@ devtools::install_github("matthiasheinig/histoneHMM")
 We provide a small test data set to try out the package:
 
 ### Preprocessed data:
+
 [BN.txt](http://histonehmm.molgen.mpg.de/data/BN.txt)
+
 [SHR.txt](http://histonehmm.molgen.mpg.de/data/SHR.txt)
 
 ### Raw data:
+
 [BN.bam](http://histonehmm.molgen.mpg.de/data/BN.bam)
+
 [BN.bam.bai](http://histonehmm.molgen.mpg.de/data/BN.bam.bai)
+
 [SHR.bam](http://histonehmm.molgen.mpg.de/data/SHR.bam)
+
 [SHR.bam.bai](http://histonehmm.molgen.mpg.de/data/SHR.bam.bai)
+
 [chroms.txt](http://histonehmm.molgen.mpg.de/data/chroms.txt) : table of chromosome lengths
+
 [ensembl59-genes.gff](http://histonehmm.molgen.mpg.de/data/ensembl59-genes.gff) : gene annotation in gff format (only gene bodies, no exon information)
+
 [expression.txt](http://histonehmm.molgen.mpg.de/data/expression.txt): RNA-seq gene expression
 
 ## Highlevel interface
@@ -41,6 +50,7 @@ We provide a small test data set to try out the package:
 We have a new and improved version with a high level interface for more convenience. Please check out the package vignette:
 
 [histoneHMM.pdf](http://histonehmm.molgen.mpg.de/v1.6/histoneHMM.pdf)
+
 [histoneHMM.R](http://histonehmm.molgen.mpg.de/v1.6/histoneHMM.R)
 
 ## Citation
