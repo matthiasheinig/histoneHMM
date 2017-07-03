@@ -1,0 +1,10 @@
+useDynLib(histoneHMM)
+
+# Export all names
+exportPattern(".")
+# export(zinba.hmm.posterior, zinbacopula.hmm.posterior, em, fitzinba, )
+
+# Import all packages listed as Imports or Depends
+# import(
+#   evd
+# )
