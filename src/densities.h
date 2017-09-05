@@ -1,3 +1,9 @@
+#ifndef DENSITIES_H
+#define DENSITIES_H
+
+
+#include <Rcpp.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -23,19 +29,16 @@ using std::ostream;
 #include <R_ext/Lapack.h>
 #include <R_ext/Applic.h>
 
-#include <R.h>
-
 // #include <map>
 #include "zeroin.h"
 
-#include <Rcpp.h>
+
 // Rcpp actually renames all rfunction to Rf_.. when using the namespace R
 // we do not need to change all function names! Just define the std stuff above
+
+#include <R.h>
+
 using namespace R;
-
-
-#ifndef DENSITIES_H
-#define DENSITIES_H
 
 
 // for the multivariate normal CDF we need to interface with some fortran code
