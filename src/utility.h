@@ -27,13 +27,13 @@ using std::vector;
 #include <sstream>
 
 //Matthias's density.h
-#include <R.h>
-#include <Rmath.h>
-#include <R_ext/BLAS.h>
-#include <R_ext/Lapack.h>
-#include <R_ext/Applic.h>
+// #include <R.h>
+// #include <Rmath.h>
+// #include <R_ext/BLAS.h>
+// #include <R_ext/Lapack.h>
+// #include <R_ext/Applic.h>
 // #include <Rinternals.h>
-#include <R_ext/Utils.h> //from Matthias's hmm.h
+// #include <R_ext/Utils.h> //from Matthias's hmm.h
 //to use GSL library
 // #include <gsl/gsl_sf_hyperg.h>//needed for the hypergeometric function
 
