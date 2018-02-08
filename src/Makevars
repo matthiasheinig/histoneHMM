@@ -1,2 +1,3 @@
 PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)  `${R_HOME}/bin/Rscript -e "Rcpp:::LdFlags()"`
-PKG_CPPFLAGS = `gsl-config --cflags` `${R_HOME}/bin/Rscript -e "Rcpp:::CxxFlags()"`
+# PKG_CPPFLAGS = `gsl-config --cflags` `${R_HOME}/bin/Rscript -e "Rcpp:::CxxFlags()"`
+PKG_CPPFLAGS = `${R_HOME}/bin/Rscript -e "Rcpp:::CxxFlags()"`

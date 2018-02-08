@@ -35,7 +35,7 @@ using std::vector;
 // #include <Rinternals.h>
 #include <R_ext/Utils.h> //from Matthias's hmm.h
 //to use GSL library
-#include <gsl/gsl_sf_hyperg.h>//needed for the hypergeometric function
+// #include <gsl/gsl_sf_hyperg.h>//needed for the hypergeometric function
 
 //#include <boost/locale.hpp>
 //#include </home/p265768/boost_1_51_0/boost/math/distributions/negative_binomial.hpp>

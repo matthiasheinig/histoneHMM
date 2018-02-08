@@ -612,6 +612,61 @@ extern "C" {
     /* printf("OK\n"); */
   }
 
+
+void R_hmm_baumwelch_negbinom(double* O, int* T, int* N, double* mu, double* size, int* iterationMAX, double* eps, double* post, double* A, double* proba)
+{
+    printf("seqlen %i, nstates %i, maxit %i, eps %f\n", *T, *N, *iterationMAX, *eps);
+
+    /* initialize */
+    /* printf("init..\n"); */
+    ScalingHMM* model = new ScalingHMM(O, *T, *N);
+
+    /* copy the distribution params */
+    int i, j, t;
+    for (i=0; i<model->N; i++) {
+      // Density* d;
+      Negbinom * d = new Negbinom(O, *T, size[i], mu[i]);
+      model->densityFunctions.push_back(d);
+    }
+    
+    /* printf("OK\n"); */
+
+    /* estimate the parameters */
+    /* printf("estimate transitions..\n"); */
+    model->baumWelch(*iterationMAX, *eps);
+
+    /* get back the parameters to R */
+    for (i=0; i<model->N; i++) {
+      // Density* d;
+      mu[i] = ((Negbinom*)(model->densityFunctions[i]))->mu;
+      size[i] = ((Negbinom*)(model->densityFunctions[i]))->size;
+    }
+
+    /* printf("OK\n"); */
+
+    /* compute the posteriors and save results directly to the R pointer */
+    /* we do not need to recompute the forward and backward variables since 
+       they have been computed in the estimation already */
+    /* printf("compute posterior.."); */
+    double** post_matrix = allocDoubleMatrix(model->N, model->T);
+    model->posterior(post_matrix, 0);
+    /* recode into column representation */
+    for (t=0; t<model->T; t++) {
+      for (i=0; i<model->N; i++) {
+	post[t + i * model->T] = post_matrix[i][t];
+      }
+    }
+    freeDoubleMatrix(post_matrix, model->N);
+    /* also return the estimated transition matrix and the initial probs */
+    for (i=0; i<model->N; i++) {
+      proba[i] = model->proba[i];
+      for (j=0; j<model->N; j++) {
+	A[i + j * model->N] = model->A[i][j];
+      }
+    }
+    /* printf("OK\n"); */
+  }
+
   /* run with zero inflated negative binomial distributions */
   void R_hmm_posterior_zinba(double* O, int* T, int* N, double* mu, double* size, double* beta, int* iterationMAX, double* eps, double* post, double* A, double* proba) {
     printf("seqlen %i, nstates %i, maxit %i, eps %f\n", *T, *N, *iterationMAX, *eps);
