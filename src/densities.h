@@ -86,10 +86,17 @@ class Zero : public Density {
   Zero();
   Zero(double* observations);
   double density(int t);
-  void initialize();
+  double density(double* x);
+  double logdensity(int t);
+  double logdensity(double* x);
+  double CDF(double* x);
+  double logCDF(double* x);
+  void initialize(double* weight, int T);
   void put(std::ostream& os);
   void copy(Density* other);
   void update(double* weight, int T);
+  DensityName getType();
+  double getMean();
  private:
   double* O; // observations
 };

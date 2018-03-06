@@ -30,14 +30,18 @@ Zero::Zero(double* observations) {
 }
 
 double Zero::density(int t) {
-  if (this->O[t] == 0) {
+  return(density(this->O[t]));
+}
+
+double Zero::density(double* x) {
+  if (*x == 0) {
     return(1);
   } else {
     return(0);
   }
 }
 
-void Zero::initialize() {}
+void Zero::initialize(double* weight, int T) {}
 
 void Zero::put(std::ostream& os) {
   os<<"Zero();";
@@ -46,6 +50,33 @@ void Zero::put(std::ostream& os) {
 void Zero::copy(Density* other) {}
 
 void Zero::update(double* weight, int T) {}
+
+double Zero::logdensity(int t) {
+  return(log(density(t)));
+}
+
+double Zero::logdensity(double* x) {
+  return(log(density(x)));
+}
+
+double Zero::CDF(double* x) {
+  cout<<"Warning: Zero::CDF not implemented yet!\n";
+  return(0);
+}
+
+
+double Zero::logCDF(double* x) {
+  return(log(CDF(x)));
+}
+
+DensityName Zero::getType() {
+  return(Z);
+}
+
+double Zero::getMean() {
+  return(0);
+}
+
 
 LogNormal::LogNormal(double* observations, int n, double mu, double sigma) {
   this->O = observations;

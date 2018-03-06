@@ -624,9 +624,14 @@ void R_hmm_baumwelch_negbinom(double* O, int* T, int* N, double* mu, double* siz
     /* copy the distribution params */
     int i, j, t;
     for (i=0; i<model->N; i++) {
-      // Density* d;
-      Negbinom * d = new Negbinom(O, *T, size[i], mu[i]);
-      model->densityFunctions.push_back(d);
+      // check if a zero inflation component is included (encoded by mu = 0)
+      if (mu[i] == 0) {
+	Zero * d = new Zero(O);
+	model->densityFunctions.push_back(d);
+      } else {
+	Negbinom * d = new Negbinom(O, *T, size[i], mu[i]);
+	model->densityFunctions.push_back(d);
+      }
     }
     
     /* printf("OK\n"); */
@@ -638,8 +643,11 @@ void R_hmm_baumwelch_negbinom(double* O, int* T, int* N, double* mu, double* siz
     /* get back the parameters to R */
     for (i=0; i<model->N; i++) {
       // Density* d;
-      mu[i] = ((Negbinom*)(model->densityFunctions[i]))->mu;
-      size[i] = ((Negbinom*)(model->densityFunctions[i]))->size;
+      // only consider the non-zero distributions for copying
+      if (mu[i] != 0) {
+	mu[i] = ((Negbinom*)(model->densityFunctions[i]))->mu;
+	size[i] = ((Negbinom*)(model->densityFunctions[i]))->size;
+      }
     }
 
     /* printf("OK\n"); */
