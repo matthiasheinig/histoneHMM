@@ -340,12 +340,12 @@ callRegions <- function(avg.posterior, cutoff, posterior.col="avg.posterior", ex
   called2reduced = cbind(queryHits(called2reduced), subjectHits(called2reduced))
   
   # compute global avg posterior
-  reduced.posterior = tapply(elementMetadata(called.granges)[,posterior.col],
-    called2reduced[,2], mean, na.rm=T)
+  reduced.posterior = as.numeric(tapply(elementMetadata(called.granges)[,posterior.col],
+    called2reduced[,2], mean, na.rm=T))
   # compute global avg expression
   if (!is.null(expr.col)) {
-    reduced.expression = tapply(elementMetadata(called.granges)[,expr.col],
-      called2reduced[,2], mean, na.rm=T)
+    reduced.expression = as.numeric(tapply(elementMetadata(called.granges)[,expr.col],
+      called2reduced[,2], mean, na.rm=T))
   } else {
     reduced.expression = rep(NA, length(reduced.granges))
   }
