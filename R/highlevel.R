@@ -403,7 +403,7 @@ plot.bivariate <- function(fname1, fname2, outdir, sample1, sample2, maxq=1-1e-3
   }
 }
 
-get.differential.regions <- function(fname1, fname2, outdir, sample1, sample2, chrom="chr19", em=FALSE, baum.welch=FALSE, maxq=1-1e-4) {
+get.differential.regions <- function(fname1, fname2, outdir, sample1, sample2, chrom="chr19", em=FALSE, baum.welch=FALSE, maxq=1-1e-4, cutoff=0.5) {
   dir.create(outdir)
   outname = paste(sample1, "-vs-", sample2, sep="")
   fname = paste(outdir, "/", outname, ".txt", sep="")
@@ -420,13 +420,13 @@ get.differential.regions <- function(fname1, fname2, outdir, sample1, sample2, c
   }
   
   if (do.calls) {
-    unmod.both = callRegions(bivariate.posterior, 0.5, "unmod.both", NULL)
+    unmod.both = callRegions(bivariate.posterior, cutoff, "unmod.both", NULL)
     GR2gff(unmod.both, paste(outdir, "/", outname, "-unmod_both.gff", sep=""))
-    mod.both = callRegions(bivariate.posterior, 0.5, "mod.both", NULL)
+    mod.both = callRegions(bivariate.posterior, cutoff, "mod.both", NULL)
     GR2gff(mod.both, paste(outdir, "/", outname, "-mod_both.gff", sep=""))
-    sample1.regions = callRegions(bivariate.posterior, 0.5, make.names(sample1), NULL)
+    sample1.regions = callRegions(bivariate.posterior, cutoff, make.names(sample1), NULL)
     GR2gff(sample1.regions, paste(outdir, "/", outname, "-", sample1, ".gff", sep=""))
-    sample2.regions = callRegions(bivariate.posterior, 0.5, make.names(sample2), NULL)
+    sample2.regions = callRegions(bivariate.posterior, cutoff, make.names(sample2), NULL)
     GR2gff(sample2.regions, paste(outdir, "/", outname, "-", sample2, ".gff", sep=""))
   }
   

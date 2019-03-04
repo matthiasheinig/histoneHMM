@@ -19,6 +19,9 @@ option_list <- list(
               help="name of sample2 [default \"sample2\"]"),
   make_option("--verbose", action="store_true", default=FALSE,
               help="more output"),
+  make_option("--baumwelch", action="store_false",
+              help="Whether the Baum Welch algorithm should be used for
+                    parameter estimation.")
   make_option(c("-P", "--probability"), default=0.5,
               help="threhshold for the posterior probability to call regions")
 )
@@ -44,4 +47,5 @@ fname2 = opt$args[2]
 ## run the HMM
 regions = get.differential.regions(fname1, fname2, outdir=opt$options$outdir,
   sample1=opt$options$sample1, sample2=opt$options$sample2,
-  em=opt$options$em, maxq=1-1e-3)
+  em=opt$options$em, maxq=1-1e-3, baum.welch=opt$options$baumwelch,
+  cutoff=opt$options$probability)
