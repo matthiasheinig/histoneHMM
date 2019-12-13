@@ -33,6 +33,12 @@ CDF <- function(model, x) {
 }
 setGeneric("CDF")
 
+## defualt is just to return the total length of all slots of the object
+nparam <- function(model) {
+  slots <- slotNames(model)
+  return(sum(sapply(slots, function(sname) length(slot(model, sname)))))
+}
+setGeneric("nparam")
 
 # the superclass is Distribution
 Distribution <- setClass("Distribution")
@@ -144,6 +150,9 @@ drawFrom.Zero <- function(model, N) {
 }
 setMethod("drawFrom", signature=c(model="Zero", N="numeric"), drawFrom.Zero)
 
+nparam.Zero <- function(model) return(0)
+setMethod("nparam", signature=c(model="Zero"), nparam.Zero)
+
 
 # we also define this for a zero inflated negative binomial using a C implementation
 CZinba <- setClass("CZinba", representation=list(size="numeric", mu="numeric", beta="numeric"), contains="Distribution")
@@ -215,6 +224,53 @@ CDF.Negbinom <- function(model, x) {
   return(pnbinom(x, size=model@size, mu=model@mu))
 }
 setMethod("CDF", signature=c(model="Negbinom", x="numeric"), CDF.Negbinom)
+
+
+## Gamma distribution
+Gamma <- setClass("Gamma", representation=list(shape="numeric", rate="numeric"), contains="Distribution")
+
+logLikelihood.Gamma <- function(model, x) {
+  return(dgamma(x, shape=model@shape, rate=model@rate, log=T))
+}
+setMethod("logLikelihood", signature=c(model="Gamma", x="numeric"), logLikelihood.Gamma)
+
+fit.Gamma <- function(model, x, logExpectation) {
+  ## this is modified from MASS::fidistr
+  if (any(x <= 0)) 
+    warning("gamma values must be > 0")
+  
+  weight <- exp(logExpectation)
+  m <- x %*% weight / n
+  v <- sum(weight * (x - m)^2) / n
+
+  start <- list(shape = m^2/v, rate = m/v)
+  control <- list(parscale = c(1, start$rate))
+
+  ## define the objective function
+  obj <- function(par) -sum(weight * dgamma(x[x > 0], shape=par[["shape"]], rate=par[["rate"]], log=TRUE)) / n
+
+  fit <- optim(start, obj)
+  if (fit$convergence != 0) {
+    warning("fitzinba did not converge")
+  }
+  par <- fit$par
+
+  newmodel = new("Gamma")
+  newmodel@shape = par["shape"]
+  newmodel@rate = par["rate"]
+  return(newmodel)
+}
+setMethod("fit", signature=c(model="Gamma", x="numeric", logExpectation="numeric"), fit.Gamma)
+
+drawFrom.Gamma <- function(model, N) {
+  return(rgamma(N, shape=model@shape, rate=model@rate))
+}
+setMethod("drawFrom", signature=c(model="Gamma", N="numeric"), drawFrom.Gamma)
+
+CDF.Gamma <- function(model, x) {
+  return(pnbinom(x, shape=model@shape, rate=model@rate))
+}
+setMethod("CDF", signature=c(model="Gamma", x="numeric"), CDF.Gamma)
 
 
 ## the EM behaves strangely somtimes, so we try truncated distributions
@@ -327,6 +383,12 @@ logLikelihood.EMResult <- function(model, x) {
 }
 setMethod("logLikelihood", signature=c(model="EMResult", x="numeric"), logLikelihood.EMResult)
 
+nparam.EMResult <- function(model) {
+  nparam.submodels <- sapply(model@models, nparam)
+  ## proportions sum up to one so we actually have nr of components - 1 proportion parameters
+  return(sum(nparam.submodels) + length(model@models) - 1)
+}
+setMethod("nparam", signature=c(model="EMResult"), nparam.EMResult)
 
 EMPosterior <- function(emfit, x) {
   posterior = sapply(emfit@models, logLikelihood, x) + rep(log(emfit@proportions), each=length(x))
@@ -335,6 +397,15 @@ EMPosterior <- function(emfit, x) {
   return(posterior)
 }
 
+
+## compute AIC and BIC for the mixture models
+AIC <- function(emfit) {
+  return(2 * nparam(emfit) - 2 * emfit@dataLogLikelihood)
+}
+
+BIC <- function(emfit) {
+  return(log(nrow(emfit@logLikelihood)) * nparam(emfit) - 2 * emfit@dataLogLikelihood)
+}
 
 
 # iteratively estimate a mixture
@@ -411,6 +482,7 @@ em <- function(x, ncomp, prop=NULL, maxit=100, eps=1e-4, model.constructor="Zinb
 
     # new estimate for the proportions
     logProb = apply(logExpectation, 2, logsum) - log(n)
+    
     # new estimates for the models
     for (m in 1:ncomp) {
       models[[m]] = fit(models[[m]], x, logExpectation[,m])
@@ -517,4 +589,18 @@ if (F) {
   emfit = em(data, ncomp=2, model.constructor=ZinbaCopula)
 
   
+  ## test the gamma model
+  n <- 500
+  x <- c(rgamma(n, shape=3, rate=2), rgamma(n, shape=5, rate=1))
+  
+  hist(x, breaks=50)
+  
+  emfit <- em(x, ncomp=2, model.constructor=c("Gamma", "Gamma"))
+  
+  ## test gamma with zero inflation
+  y <- c(rep(0, 50), x)
+  emfit <- em(y, ncomp=3, model.constructor=c("Zero", "Gamma", "Gamma"))
+  
+  BIC(emfit)
+  AIC(emfit)
 }
