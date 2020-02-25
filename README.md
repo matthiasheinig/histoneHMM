@@ -53,6 +53,9 @@ We have a new and improved version with a high level interface for more convenie
 
 [histoneHMM.R](http://histonehmm.molgen.mpg.de/v1.6/histoneHMM.R)
 
+## Packaged versions
+Please check out the [project website](https://matthiasheinig.github.io/histoneHMM/)
+
 ## Citation
 
 Heinig M, Colome-Tatche M, Rintisch C, Schäfer S, Pravenec M, Hubner N, Vingron M, Johannes F. histoneHMM: Differential analysis of histone modifications with broad genomic footprints. BMC Bioinformatics 2015; 16:60
