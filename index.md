@@ -1,72 +1,70 @@
 ---
 layout: page
-title: simple site
-tagline: Easy websites with GitHub Pages
-description: Minimal tutorial on making a simple website with GitHub Pages
+title: histoneHMM
+tagline: analyse ChIP-seq data of histone modifications with broad genomic footprints
+description: analyse ChIP-seq data of histone modifications with broad genomic footprints
 ---
 
-[Github Pages](https://pages.github.com) provide a simple way to make a
-website using
-[Markdown](https://daringfireball.net/projects/markdown/) and
-[git](https://git-scm.com).
+# histoneHMM
 
-For me, the painful aspects of making a website are
+histoneHMM is a software to analyse ChIP-seq data of histone modifications with broad genomic footprints like H3K27me3. It allows for calling modified regions in single samples as well as for calling differentially modified regions in a comparison of two samples.
 
-- Working with html and css
-- Finding a hosting site
-- Transferring stuff to the hosting site
+## News
 
-With [GitHub Pages](https://pages.github.com), you just write things in
-[Markdown](https://daringfireball.net/projects/markdown/),
-[GitHub](https://github.com) hosts the site for you, and you just push
-material to your GitHub repository with `git add`, `git commit`, and
-`git push`.
+Version 1.7 is an update that works with the new Rcpp package (Verion > 0.12)
 
-If you love [git](https://git-scm.com/) and
-[GitHub](https://github.com), you'll love
-[GitHub Pages](https://pages.github.com), too.
+Version 1.6 fixes some smaller bugs and removes the dependency on the GNU scientific library
 
-The sites use [Jekyll](https://jekyllrb.com/), a
-[ruby](https://www.ruby-lang.org/en/) [gem](https://rubygems.org/), to
-convert Markdown files to html, and this part is done
-automatically when you push the materials to the `gh-pages` branch
-of a GitHub repository.
+We released version 1.5 introduces a command line interface (see vignette), improved preprocessing and an updated vignette.
 
-The [GitHub](https://pages.github.com) and
-[Jekyll](https://jekyllrb.com) documentation is great, but I thought it
-would be useful to have a minimal tutorial, for those who just want to
-get going immediately with a simple site. To some readers, what GitHub
-has might be simpler and more direct.  But if you just want to create
-a site like the one you're looking at now, read on.
+We have just released the new and improved version 1.4 with a high level interface for more convenience.
 
-Start by reading the [Overview page](pages/overview.html), which
-explains the basic structure of these sites. Then read
-[how to make an independent website](pages/independent_site.html). Then
-read any of the other things, such as
-[how to test your site locally](pages/local_test.html).
+## Installation
 
-- [Overview](pages/overview.html)
-- [Making an independent website](pages/independent_site.html)
-- [Making a personal site](pages/user_site.html)
-- [Making a site for a project](pages/project_site.html)
-- [Making a jekyll-free site](pages/nojekyll.html)
-- [Testing your site locally](pages/local_test.html)
-- [Resources](pages/resources.html)
+```{r}
+install.packages("devtools")
+devtools::install_github("matthiasheinig/histoneHMM")
+```
 
-If anything here is confusing (or _wrong_!), or if I've missed
-important details, please
-[submit an issue](https://github.com/kbroman/simple_site/issues), or (even
-better) fork [the GitHub repository for this website](https://github.com/kbroman/simple_site),
-make modifications, and submit a pull request.
+## Usage
 
----
+We provide a small test data set to try out the package:
 
-The source for this minimal tutorial is [on github](https://github.com/kbroman/simple_site).
+### Preprocessed data:
 
-Also see my [tutorials](https://kbroman.org/pages/tutorials) on
-[git/github](https://kbroman.org/github_tutorial),
-[GNU make](https://kbroman.org/minimal_make),
-[knitr](https://kbroman.org/knitr_knutshell),
-[R packages](https://kbroman.org/pkg_primer),
-[data organization](https://kbroman.org/dataorg),
-and [reproducible research](https://kbroman.org/steps2rr).
+[BN.txt](http://histonehmm.molgen.mpg.de/data/BN.txt)
+
+[SHR.txt](http://histonehmm.molgen.mpg.de/data/SHR.txt)
+
+### Raw data:
+
+[BN.bam](http://histonehmm.molgen.mpg.de/data/BN.bam)
+
+[BN.bam.bai](http://histonehmm.molgen.mpg.de/data/BN.bam.bai)
+
+[SHR.bam](http://histonehmm.molgen.mpg.de/data/SHR.bam)
+
+[SHR.bam.bai](http://histonehmm.molgen.mpg.de/data/SHR.bam.bai)
+
+[chroms.txt](http://histonehmm.molgen.mpg.de/data/chroms.txt) : table of chromosome lengths
+
+[ensembl59-genes.gff](http://histonehmm.molgen.mpg.de/data/ensembl59-genes.gff) : gene annotation in gff format (only gene bodies, no exon information)
+
+[expression.txt](http://histonehmm.molgen.mpg.de/data/expression.txt): RNA-seq gene expression
+
+## Highlevel interface
+
+We have a new and improved version with a high level interface for more convenience. Please check out the package vignette:
+
+[histoneHMM.pdf](http://histonehmm.molgen.mpg.de/v1.6/histoneHMM.pdf)
+
+[histoneHMM.R](http://histonehmm.molgen.mpg.de/v1.6/histoneHMM.R)
+
+## Citation
+
+Heinig M, Colome-Tatche M, Rintisch C, Schäfer S, Pravenec M, Hubner N, Vingron M, Johannes F. histoneHMM: Differential analysis of histone modifications with broad genomic footprints. BMC Bioinformatics 2015; 16:60
+
+## Contact
+
+Matthias Heinig: matthias.heinig@helmholtz-muenchen.de
+
