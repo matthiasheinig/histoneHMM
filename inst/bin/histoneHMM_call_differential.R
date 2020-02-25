@@ -21,7 +21,7 @@ option_list <- list(
               help="more output"),
   make_option("--baumwelch", action="store_false",
               help="Whether the Baum Welch algorithm should be used for
-                    parameter estimation.")
+                    parameter estimation."),
   make_option(c("-P", "--probability"), default=0.5,
               help="threhshold for the posterior probability to call regions")
 )
