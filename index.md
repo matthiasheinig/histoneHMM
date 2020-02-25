@@ -1,7 +1,7 @@
 ---
 layout: page
 title: histoneHMM
-tagline: analyse ChIP-seq data of histone modifications with broad genomic footprints
+tagline: analyse ChIP-seq data with broad genomic footprints
 description: analyse ChIP-seq data of histone modifications with broad genomic footprints
 ---
 
@@ -63,6 +63,10 @@ We have a new and improved version with a high level interface for more convenie
 ## Citation
 
 Heinig M, Colome-Tatche M, Rintisch C, Schäfer S, Pravenec M, Hubner N, Vingron M, Johannes F. histoneHMM: Differential analysis of histone modifications with broad genomic footprints. BMC Bioinformatics 2015; 16:60
+
+## Packaged versions
+[histoneHMM_1.8.tar.gz](histoneHMM_1.8.tar.gz)
+
 
 ## Contact
 
